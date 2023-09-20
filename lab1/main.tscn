@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://cfqw0jqnw1w2t"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_1lk3u"]
+[ext_resource type="PackedScene" uid="uid://b3e6lb6bbwwyb" path="res://ball.tscn" id="2_mt62t"]
+[ext_resource type="Script" path="res://trace.gd" id="3_wvaff"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mb1q4"]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0ol7p"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ttr21"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_5jdj8"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_n6mnr"]
+normal = Vector2(-1, 0)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_1lk3u")
+ball_scene = ExtResource("2_mt62t")
+force_strength = 50000
+
+[node name="Walls" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_mb1q4")
+
+[node name="Up" type="CollisionShape2D" parent="Walls"]
+position = Vector2(576, 0)
+shape = SubResource("WorldBoundaryShape2D_0ol7p")
+
+[node name="Down" type="CollisionShape2D" parent="Walls"]
+position = Vector2(576, 648)
+shape = SubResource("WorldBoundaryShape2D_ttr21")
+
+[node name="Left" type="CollisionShape2D" parent="Walls"]
+position = Vector2(0, 320)
+shape = SubResource("WorldBoundaryShape2D_5jdj8")
+
+[node name="Right" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1152, 320)
+shape = SubResource("WorldBoundaryShape2D_n6mnr")
+
+[node name="Balls" type="Node" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+color = Color(0.956863, 0.956863, 0.956863, 1)
+
+[node name="Trace" type="Node2D" parent="."]
+script = ExtResource("3_wvaff")
