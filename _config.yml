@@ -1,0 +1,13 @@
+# Site Build Settings
+
+# jekyll-paginate configuration
+paginate:            5
+
+# Build settings
+markdown:            kramdown
+highlighter:         rouge
+permalink:           /:title
+plugins:             [jekyll-paginate, jekyll-sitemap, jekyll-seo-tag, jekyll-redirect-from]
+
+title:               "Game Development"
+description:         "Game development course in Moscow Aviation Institute "
