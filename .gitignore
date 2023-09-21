@@ -13,3 +13,13 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Jekyll
+_site
+Gemfile.lock
+.sass-cache
+.jekyll-metadata
+.DS_Store
+.jekyll-cache
+*.gem
+
