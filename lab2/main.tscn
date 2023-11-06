@@ -1,0 +1,80 @@
+[gd_scene load_steps=15 format=3 uid="uid://dvorti5ox8x4c"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_qvfor"]
+[ext_resource type="PackedScene" uid="uid://bj6i4yl7udwey" path="res://ball.tscn" id="2_yj0p8"]
+[ext_resource type="Script" path="res://camera.gd" id="3_mfwbp"]
+[ext_resource type="Script" path="res://slider.gd" id="4_i5dxf"]
+[ext_resource type="Texture2D" uid="uid://dqy683qdx88ui" path="res://Nebula 24 4k.hdr" id="5_cstho"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fytad"]
+albedo_color = Color(1, 1, 1, 0.0588235)
+metallic = 0.75
+roughness = 0.0
+refraction_enabled = true
+refraction_scale = 0.01
+
+[sub_resource type="BoxMesh" id="BoxMesh_43pdk"]
+material = SubResource("StandardMaterial3D_fytad")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gcro0"]
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_7k4ti"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2h2xn"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_w1omb"]
+material = SubResource("StandardMaterial3D_2h2xn")
+radius = 0.05
+height = 0.1
+radial_segments = 32
+rings = 16
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tdrfx"]
+panorama = ExtResource("5_cstho")
+
+[sub_resource type="Sky" id="Sky_khbix"]
+sky_material = SubResource("PanoramaSkyMaterial_tdrfx")
+
+[sub_resource type="Environment" id="Environment_sxyfh"]
+background_mode = 2
+background_energy_multiplier = 4.0
+sky = SubResource("Sky_khbix")
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_qvfor")
+ball_scene = ExtResource("2_yj0p8")
+
+[node name="Box" type="StaticBody3D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box"]
+mesh = SubResource("BoxMesh_43pdk")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box"]
+shape = SubResource("BoxShape3D_gcro0")
+
+[node name="Walls" type="StaticBody3D" parent="."]
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.63407)
+script = ExtResource("3_mfwbp")
+
+[node name="Lights" type="Node" parent="."]
+
+[node name="Balls" type="Node" parent="."]
+
+[node name="Slider" type="MeshInstance3D" parent="." node_paths=PackedStringArray("camera")]
+visible = false
+mesh = SubResource("ImmediateMesh_7k4ti")
+script = ExtResource("4_i5dxf")
+camera = NodePath("../Camera")
+
+[node name="Dot" type="MeshInstance3D" parent="Slider"]
+mesh = SubResource("SphereMesh_w1omb")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_sxyfh")

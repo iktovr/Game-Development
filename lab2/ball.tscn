@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://bj6i4yl7udwey"]
+
+[ext_resource type="Script" path="res://ball.gd" id="1_k3bc0"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_i74b7"]
+bounce = 1.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_j4bnm"]
+resource_local_to_scene = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d8k8m"]
+resource_local_to_scene = true
+metallic = 1.0
+roughness = 0.75
+emission = Color(0.835294, 0.839216, 0.705882, 1)
+emission_energy_multiplier = 0.1
+clearcoat_roughness = 0.8
+refraction_scale = 0.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_invor"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_d8k8m")
+
+[node name="Ball" type="RigidBody3D"]
+collision_layer = 5
+physics_material_override = SubResource("PhysicsMaterial_i74b7")
+gravity_scale = 0.0
+linear_damp = 0.1
+script = ExtResource("1_k3bc0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_j4bnm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_invor")
