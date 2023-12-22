@@ -1,0 +1,120 @@
+[gd_scene load_steps=13 format=3 uid="uid://bqaeh5ghxl7u4"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_2hbh1"]
+[ext_resource type="PackedScene" uid="uid://cjssh347c6vi0" path="res://ship.tscn" id="1_nlrbh"]
+[ext_resource type="PackedScene" uid="uid://brfmn5v6oodtc" path="res://spawner.tscn" id="2_7cb80"]
+[ext_resource type="Texture2D" uid="uid://bv7460cadxhmb" path="res://images/sky.jpg" id="4_kyjr6"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_w6tb6"]
+plane = Plane(-1, 0, 0, 0)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_yia86"]
+plane = Plane(1, 0, 0, 0)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_qryf6"]
+plane = Plane(0, -1, 0, 0)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_3rnr3"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_vu20l"]
+panorama = ExtResource("4_kyjr6")
+
+[sub_resource type="Sky" id="Sky_e3ymj"]
+sky_material = SubResource("PanoramaSkyMaterial_vu20l")
+
+[sub_resource type="Environment" id="Environment_efitl"]
+background_mode = 2
+background_energy_multiplier = 0.3
+sky = SubResource("Sky_e3ymj")
+sky_rotation = Vector3(-0.174533, 0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nuwg1"]
+font_size = 78
+
+[node name="Main" type="Node"]
+process_mode = 3
+script = ExtResource("1_2hbh1")
+
+[node name="Walls" type="StaticBody3D" parent="."]
+collision_layer = 4
+
+[node name="Right" type="CollisionShape3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+shape = SubResource("WorldBoundaryShape3D_w6tb6")
+
+[node name="Left" type="CollisionShape3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
+shape = SubResource("WorldBoundaryShape3D_yia86")
+
+[node name="Top" type="CollisionShape3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+shape = SubResource("WorldBoundaryShape3D_qryf6")
+
+[node name="Bottom" type="CollisionShape3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
+shape = SubResource("WorldBoundaryShape3D_3rnr3")
+
+[node name="Ship" parent="." instance=ExtResource("1_nlrbh")]
+
+[node name="Spawner" parent="." instance=ExtResource("2_7cb80")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.808822, 0.588054, 0, -0.588054, 0.808822, 0, 8.10478, 14.0888)
+light_energy = 0.5
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_efitl")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Retry" type="ColorRect" parent="UI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.68, 0.68)
+color = Color(0, 0, 0, 0)
+
+[node name="Label" type="Label" parent="UI/Retry"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "GAME OVER"
+label_settings = SubResource("LabelSettings_nuwg1")
+
+[node name="Button" type="Button" parent="UI/Retry"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = 36.0
+offset_right = 24.0
+offset_bottom = 59.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Press space or click here to restart"
+
+[connection signal="hit" from="Ship" to="." method="_on_ship_hit"]
+[connection signal="pressed" from="UI/Retry/Button" to="." method="_on_button_pressed"]
