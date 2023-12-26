@@ -1,0 +1,215 @@
+[gd_scene load_steps=20 format=3 uid="uid://bqaeh5ghxl7u4"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_2hbh1"]
+[ext_resource type="PackedScene" uid="uid://cjssh347c6vi0" path="res://ship.tscn" id="1_nlrbh"]
+[ext_resource type="PackedScene" uid="uid://cuhdgf0qxnejc" path="res://asteroid.tscn" id="2_ue6sh"]
+[ext_resource type="PackedScene" uid="uid://hv7rtvoqpjgw" path="res://models/corridor_cornerRoundWindow.glb" id="4_6p5wx"]
+[ext_resource type="Texture2D" uid="uid://bv7460cadxhmb" path="res://images/sky.jpg" id="4_i5cw7"]
+[ext_resource type="PackedScene" uid="uid://c1re8c0scepfg" path="res://models/corridor_cornerRound.glb" id="4_mxmrr"]
+[ext_resource type="PackedScene" uid="uid://d4edi0ypi08bt" path="res://models/corridor.glb" id="4_we1qm"]
+[ext_resource type="PackedScene" uid="uid://cpt82mnpbksg2" path="res://models/corridor_corner.glb" id="6_hjguj"]
+[ext_resource type="PackedScene" uid="uid://b3bt7qpxhe6t5" path="res://models/corridor_window.glb" id="6_lqk8o"]
+[ext_resource type="PackedScene" uid="uid://bwxlpchb78u3i" path="res://models/corridor_split.glb" id="9_bwndw"]
+[ext_resource type="PackedScene" uid="uid://b3hst02v60kbv" path="res://models/corridor_end.glb" id="10_uikr0"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_c3lkf"]
+panorama = ExtResource("4_i5cw7")
+
+[sub_resource type="Sky" id="Sky_1wujn"]
+sky_material = SubResource("PanoramaSkyMaterial_c3lkf")
+
+[sub_resource type="Environment" id="Environment_4stmt"]
+background_mode = 2
+sky = SubResource("Sky_1wujn")
+
+[sub_resource type="LabelSettings" id="LabelSettings_nuwg1"]
+font_size = 78
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0535x"]
+size = Vector3(12, 7, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m3p2p"]
+size = Vector3(26, 2, 27)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_o740x"]
+size = Vector2(60, 70)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_gebhs"]
+
+[node name="Main" type="Node"]
+process_mode = 3
+script = ExtResource("1_2hbh1")
+asteroid_scene = ExtResource("2_ue6sh")
+
+[node name="Ship" parent="." instance=ExtResource("1_nlrbh")]
+process_mode = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.32907, 26.1059)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.808822, 0.588054, 0, -0.588054, 0.808822, 0, 8.10478, 14.0888)
+light_energy = 0.5
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_4stmt")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Retry" type="ColorRect" parent="UI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.68, 0.68)
+color = Color(0, 0, 0, 0)
+
+[node name="Label" type="Label" parent="UI/Retry"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "GAME OVER"
+label_settings = SubResource("LabelSettings_nuwg1")
+
+[node name="Button" type="Button" parent="UI/Retry"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = 36.0
+offset_right = 24.0
+offset_bottom = 59.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Press space or click here to restart"
+
+[node name="Walls" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 27)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 9, -57)
+shape = SubResource("BoxShape3D_0535x")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 19, -27)
+shape = SubResource("BoxShape3D_m3p2p")
+
+[node name="Station" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 27)
+
+[node name="Light" type="Node3D" parent="Station"]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Station/Light"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -28, 17, -8)
+light_color = Color(1, 0.929412, 0.741176, 1)
+light_energy = 5.0
+omni_range = 15.0
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="Station/Light"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -48, 17, -28)
+light_color = Color(1, 0.929412, 0.741176, 1)
+light_energy = 5.0
+omni_range = 15.0
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="Station/Light"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -8, 17, -28)
+light_color = Color(1, 0.929412, 0.741176, 1)
+light_energy = 5.0
+omni_range = 15.0
+
+[node name="OmniLight3D8" type="OmniLight3D" parent="Station/Light"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -28, 14, -48)
+light_color = Color(1, 0.929412, 0.741176, 1)
+light_energy = 5.0
+omni_range = 15.0
+
+[node name="OmniLight3D6" type="OmniLight3D" parent="Station/Light"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -10, 17, -45)
+light_color = Color(1, 0.929412, 0.741176, 1)
+light_energy = 5.0
+omni_range = 15.0
+
+[node name="OmniLight3D7" type="OmniLight3D" parent="Station/Light"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -46, 17, -45)
+light_color = Color(1, 0.929412, 0.741176, 1)
+light_energy = 5.0
+omni_range = 15.0
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Station/Light"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -8, 17, -8)
+light_color = Color(1, 0.929412, 0.741176, 1)
+light_energy = 5.0
+omni_range = 15.0
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="Station/Light"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -46, 17, -11)
+light_color = Color(1, 0.929412, 0.741176, 1)
+light_energy = 5.0
+omni_range = 15.0
+
+[node name="Floor" type="StaticBody3D" parent="Station"]
+collision_layer = 4
+collision_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Station/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, -23)
+mesh = SubResource("PlaneMesh_o740x")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Station/Floor"]
+shape = SubResource("WorldBoundaryShape3D_gebhs")
+
+[node name="Blocks" type="Node3D" parent="Station"]
+
+[node name="corridor_cornerRoundWindow" parent="Station/Blocks" instance=ExtResource("4_6p5wx")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -18, 0, -48)
+
+[node name="corridor_cornerRoundWindow2" parent="Station/Blocks" instance=ExtResource("4_6p5wx")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -38, 0, -8)
+
+[node name="corridor_cornerRound" parent="Station/Blocks" instance=ExtResource("4_mxmrr")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -8, 0, -18)
+
+[node name="corridor_corner" parent="Station/Blocks" instance=ExtResource("6_hjguj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 0, -38)
+
+[node name="corridor" parent="Station/Blocks" instance=ExtResource("4_we1qm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88, 0, -58)
+
+[node name="corridor2" parent="Station/Blocks" instance=ExtResource("4_we1qm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 0, -58)
+
+[node name="corridor_window" parent="Station/Blocks" instance=ExtResource("6_lqk8o")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -58, 0, -8)
+
+[node name="corridor_split" parent="Station/Blocks" instance=ExtResource("9_bwndw")]
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 2, 0, -48)
+
+[node name="corridor_end" parent="Station/Blocks" instance=ExtResource("10_uikr0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -68, 0, -28)
+
+[node name="Asteroids" type="Node3D" parent="."]
+
+[connection signal="hit" from="Ship" to="." method="_on_ship_hit"]
+[connection signal="pressed" from="UI/Retry/Button" to="." method="_on_button_pressed"]

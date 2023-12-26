@@ -1,0 +1,104 @@
+[gd_scene load_steps=11 format=3 uid="uid://cjssh347c6vi0"]
+
+[ext_resource type="Script" path="res://ship.gd" id="1_3lbkm"]
+[ext_resource type="ArrayMesh" uid="uid://cffxbnsnddr7g" path="res://models/craft_speederC.obj" id="2_fh5j8"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_to6ey"]
+radius = 0.258884
+height = 1.1724
+
+[sub_resource type="Gradient" id="Gradient_o85ef"]
+offsets = PackedFloat32Array(0.201835, 0.761468)
+colors = PackedColorArray(0, 0, 0, 1, 1, 0.45098, 0.168627, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ottj8"]
+gradient = SubResource("Gradient_o85ef")
+
+[sub_resource type="Curve" id="Curve_23e3c"]
+_data = [Vector2(0, 0.0947368), 0.0, 0.0, 0, 0, Vector2(0.357143, 0.978947), 0.0, 0.0, 0, 0, Vector2(1, 0.315789), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_fifkm"]
+curve = SubResource("Curve_23e3c")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2x8mx"]
+direction = Vector3(0, 0, 1)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 3.0
+angular_velocity_max = 40.0
+linear_accel_min = 1.0
+linear_accel_max = 4.0
+angle_max = 360.0
+scale_min = 0.05
+scale_max = 0.3
+scale_curve = SubResource("CurveTexture_fifkm")
+color_initial_ramp = SubResource("GradientTexture1D_ottj8")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ph28p"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.45098, 0.168627, 1)
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_shiqs"]
+material = SubResource("StandardMaterial3D_ph28p")
+
+[node name="Ship" type="CharacterBody3D"]
+process_mode = 1
+collision_mask = 7
+script = ExtResource("1_3lbkm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.7, 0, -1.05697e-07, 0, 0.7, 0, 1.05697e-07, 0, -0.7, 0, -0.194818, 0)
+layers = 3
+mesh = ExtResource("2_fh5j8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.0150615, -0.0242021, 0.10522)
+shape = SubResource("CapsuleShape3D_to6ey")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.4)
+light_energy = 5.0
+spot_range = 21.0
+spot_angle = 19.9693
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 3, 3)
+light_energy = 5.0
+light_cull_mask = 4294966274
+spot_range = 5.73377
+spot_angle = 21.2112
+
+[node name="Thruster1" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.280551, 0.0443785, 0.689316)
+amount = 200
+lifetime = 0.15
+randomness = 1.0
+visibility_aabb = AABB(-0.5, -0.5, -0.5, 1, 1, 1)
+local_coords = true
+draw_order = 3
+process_material = SubResource("ParticleProcessMaterial_2x8mx")
+draw_pass_1 = SubResource("QuadMesh_shiqs")
+
+[node name="Thruster2" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27131, 0.0443785, 0.689316)
+amount = 200
+lifetime = 0.15
+randomness = 1.0
+visibility_aabb = AABB(-0.5, -0.5, -0.5, 1, 1, 1)
+local_coords = true
+draw_order = 3
+process_material = SubResource("ParticleProcessMaterial_2x8mx")
+draw_pass_1 = SubResource("QuadMesh_shiqs")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.967999, 0.250955, 0, -0.250955, 0.967999, 0, 2.4773, 4.76988)
