@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://b73t5qmj0eo8h"]
+
+[ext_resource type="ArrayMesh" uid="uid://vhhnsxl1jgcb" path="res://models/craft_cargoA.obj" id="1_o45c3"]
+[ext_resource type="Script" path="res://cargoship.gd" id="1_yta5c"]
+[ext_resource type="PackedScene" uid="uid://t5e2ekripu78" path="res://explosion.tscn" id="2_5qqac"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hqbow"]
+resource_name = "metalRed"
+albedo_color = Color(0.439216, 1, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a7qvv"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+albedo_color = Color(0.4, 1, 0, 0.396078)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_l7485"]
+material = SubResource("StandardMaterial3D_a7qvv")
+top_radius = 0.0
+bottom_radius = 0.7
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0hb1x"]
+size = Vector3(1.4, 1.7, 1.4)
+
+[node name="Cargoship" type="CharacterBody3D"]
+collision_layer = 64
+collision_mask = 771
+script = ExtResource("1_yta5c")
+explosion_scene = ExtResource("2_5qqac")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_o45c3")
+surface_material_override/2 = SubResource("StandardMaterial3D_hqbow")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 16
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.319347, 0)
+mesh = SubResource("CylinderMesh_l7485")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_0hb1x")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

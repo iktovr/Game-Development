@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ckqus5qmiv7sy"
+path="res://.godot/imported/astronautA.obj-6f1f7ae83d99587e950ef4d4f8b86959.mesh"
+
+[deps]
+
+files=["res://.godot/imported/astronautA.obj-6f1f7ae83d99587e950ef4d4f8b86959.mesh"]
+
+source_file="res://models/astronautA.obj"
+dest_files=["res://.godot/imported/astronautA.obj-6f1f7ae83d99587e950ef4d4f8b86959.mesh", "res://.godot/imported/astronautA.obj-6f1f7ae83d99587e950ef4d4f8b86959.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

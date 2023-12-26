@@ -1,0 +1,32 @@
+[gd_scene load_steps=8 format=3 uid="uid://brfmn5v6oodtc"]
+
+[ext_resource type="Script" path="res://spawner.gd" id="1_a6l1j"]
+[ext_resource type="PackedScene" uid="uid://cuhdgf0qxnejc" path="res://asteroid.tscn" id="2_oprpd"]
+[ext_resource type="PackedScene" uid="uid://cn8opugppq3pd" path="res://astronaut.tscn" id="3_21uvb"]
+[ext_resource type="PackedScene" uid="uid://b73t5qmj0eo8h" path="res://cargoship.tscn" id="4_qi05c"]
+[ext_resource type="PackedScene" uid="uid://cx50ln7gy8dxb" path="res://ammo.tscn" id="5_0dvuc"]
+[ext_resource type="PackedScene" uid="uid://bvyfs6h8w72se" path="res://alienship.tscn" id="6_00j43"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_t00d1"]
+plane = Plane(0, 0, -1, 0)
+
+[node name="Spawner" type="Node3D"]
+process_mode = 1
+script = ExtResource("1_a6l1j")
+asteroid_scene = ExtResource("2_oprpd")
+astronaut_scene = ExtResource("3_21uvb")
+cargo_scene = ExtResource("4_qi05c")
+ammo_scene = ExtResource("5_0dvuc")
+alien_scene = ExtResource("6_00j43")
+
+[node name="Asteroids" type="Node3D" parent="."]
+
+[node name="Consumer" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 1002
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Consumer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+shape = SubResource("WorldBoundaryShape3D_t00d1")
+
+[connection signal="body_entered" from="Consumer" to="." method="_on_consumer_body_entered"]
